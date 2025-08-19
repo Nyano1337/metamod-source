@@ -251,6 +251,8 @@ mm_GetGameName(char *buffer, size_t size)
 MetamodBackend
 mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface serverFactory, const char *game_name)
 {
+	printf("[mm_DetermineBackendS1] game_name: %s\n", game_name);
+
 	if (engineFactory("VEngineServer023", NULL) != NULL)
 	{
 		if (engineFactory("EngineTraceServer004", NULL) == NULL)
