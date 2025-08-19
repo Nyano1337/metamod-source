@@ -394,6 +394,7 @@ mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface ser
 					}
 					else if (serverFactory("ServerGameClients005", NULL) != nullptr)
 					{
+						printf("[mm_DetermineBackendS1] return MMBackend_HL2DM\n");
 						// 2025 version of SDK 2013, or maybe hl1mp, or anything else shaped like those.
 						// We may later make a separate SDK for this branch. For now, they match, we'll hack it
 						return MMBackend_HL2DM;

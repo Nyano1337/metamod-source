@@ -90,6 +90,8 @@ public:
 		if (gamedll_bridge == NULL)
 		{
 			mm_GetGameName(game_name, sizeof(game_name));
+			
+			printf("[ServerPlugin] Load game_name: %s\n", game_name);
 
 			mm_backend = mm_DetermineBackendS1(engineFactory, gsFactory, game_name);
 			if (mm_backend == MMBackend_Mock)
