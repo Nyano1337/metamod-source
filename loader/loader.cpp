@@ -229,9 +229,6 @@ mm_GetGameName(char *buffer, size_t size)
 		{
 			switch (strtoul(pszAppId, nullptr, 10))
 			{
-				case 240ul:
-					strncpy(buffer, "cstrike", size);
-					break;
 				case 570ul:
 					strncpy(buffer, "dota", size);
 					break;
