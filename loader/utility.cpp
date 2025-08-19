@@ -696,6 +696,7 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 
 		while (getdelim(&arg, &argsize, 0, pFile) != -1)
 		{
+			printf("[mm_GetCommandArgument] arg: %s\n", arg);
 			if (nextIsValue)
 			{
 				if (buffer && arg[0] != '-')
@@ -717,7 +718,7 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 		free(arg);
 		fclose(pFile);
 
-		printf("[mm_GetCommandArgument] buffer: %s", buffer);
+		printf("[mm_GetCommandArgument] buffer: %s\n", buffer);
 
 		return found || nextIsValue;
 	}
@@ -725,7 +726,7 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 #error 
 #endif
 
-	printf("[mm_GetCommandArgument] return false");
+	printf("[mm_GetCommandArgument] return false\n");
 
 	return false;
 }

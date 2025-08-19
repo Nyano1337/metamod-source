@@ -216,7 +216,7 @@ mm_GetGameName(char *buffer, size_t size)
 {
 	if (!mm_GetCommandArgument("-game", buffer, size))
 	{
-		printf("[mm_GetGameName]: failed to get mm_GetCommandArgument -game");
+		printf("[mm_GetGameName]: failed to get mm_GetCommandArgument -game\n");
 		// Source 2 doesn't ever use -game, so we'll hardcode by app id for now. This same approach
 		// won't work for the few Source 1 games that don't require -game, as S1 initializes Steam
 		// too late (although the env var still still be already set if their is a running Steam client
