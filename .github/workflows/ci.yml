@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.os_short }}-${{ matrix.compiler_cc }}
     env:
-      SDKS: '["episode1","tf2","l4d2","csgo","dota"]'
+      SDKS: '["css"]'
       DEPENDENCIES_FOLDER: dependencies
       DEPENDENCIES_ROOT: ${{ github.workspace }}/dependencies
     steps:
@@ -32,7 +32,7 @@ jobs:
           path: metamod-source
       
       - name: Select HL2SDKs
-        run: echo 'SDKS=["episode1","tf2","l4d2","cs2","insurgency"]' >> $GITHUB_ENV
+        run: echo 'SDKS=["css"]' >> $GITHUB_ENV
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -92,4 +92,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: metamod-build
-          path: .
+          path: ./metamod-source/build
