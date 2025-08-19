@@ -89,11 +89,7 @@ public:
 		/* Backend should already filled in if loaded as gamedll */
 		if (gamedll_bridge == NULL)
 		{
-			printf("[ServerPlugin] pre get game_name: %s\n", game_name);
-
 			mm_GetGameName(game_name, sizeof(game_name));
-			
-			printf("[ServerPlugin] Load game_name: %s\n", game_name);
 
 			mm_backend = mm_DetermineBackendS1(engineFactory, gsFactory, game_name);
 			if (mm_backend == MMBackend_Mock)

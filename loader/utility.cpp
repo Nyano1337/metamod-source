@@ -639,6 +639,8 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 	if (buffer)
 		buffer[0] = '\0';
 
+	bool found = false;
+
 #if defined _WIN32
 	wchar_t wargName[256];
 	mbstowcs(wargName, argName, sizeof(wargName) / sizeof(wchar_t));
@@ -647,7 +649,6 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 	int argc;
 	LPWSTR* wargv = CommandLineToArgvW(pCmdLine, &argc);
 
-	bool found = false;
 	for (int i = 0; i < argc; ++i)
 	{
 		if (wcscmp(wargv[i], wargName) == 0)
@@ -665,8 +666,6 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 	}
 
 	LocalFree(wargv);
-
-	return found;
 
 #elif defined __APPLE__
 	int argc = *_NSGetArgc();
@@ -686,47 +685,39 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 	}
 
 #elif defined __linux__
-	FILE* pFile = fopen("/proc/self/cmdline", "rb");
-	if (pFile)
-	{
+	FILE* pCmdline = fopen("/proc/self/cmdline", "rb");
+	if (pCmdline) {
 		char* arg = nullptr;
-		size_t argsize = 0;
-		bool nextIsValue = false;
-		bool found = false;
+		size_t argSize = 0;
+		size_t bufferIndex = 0;
 
-		while (getdelim(&arg, &argsize, 0, pFile) != -1)
-		{
-			printf("[mm_GetCommandArgument] arg: %s\n", arg);
-			if (nextIsValue)
-			{
-				if (buffer && arg[0] != '-')
-				{
-					strncpy(buffer, arg, maxlength);
-					buffer[maxlength - 1] = '\0';
-				}
+		// skip the first arg (gamedir)
+		getdelim(&arg, &argSize, 0, pCmdline);
 
+		while (getdelim(&arg, &argSize, 0, pCmdline) != -1) {
+			if (!strcmp(arg, argName)) {
 				found = true;
+			}
+
+			size_t argLen = strlen(arg);
+			if (bufferIndex + argLen + 1 >= maxlength) {
 				break;
 			}
 
-			if (strcmp(arg, argName) == 0)
-			{
-				nextIsValue = true;
-			}
+			strcpy(buffer + bufferIndex, arg);
+			bufferIndex += argLen;
+			buffer[bufferIndex++] = ' ';
 		}
 
-		free(arg);
-		fclose(pFile);
+		if (arg) {
+			free(arg);
+		}
 
-		printf("[mm_GetCommandArgument] buffer: %s\n", buffer);
-
-		return found || nextIsValue;
+		fclose(pCmdline);
 	}
 #else
 #error 
 #endif
 
-	printf("[mm_GetCommandArgument] return false\n");
-
-	return false;
+	return found;
 }

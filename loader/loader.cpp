@@ -216,7 +216,6 @@ mm_GetGameName(char *buffer, size_t size)
 {
 	if (!mm_GetCommandArgument("-game", buffer, size))
 	{
-		printf("[mm_GetGameName]: failed to get mm_GetCommandArgument -game\n");
 		// Source 2 doesn't ever use -game, so we'll hardcode by app id for now. This same approach
 		// won't work for the few Source 1 games that don't require -game, as S1 initializes Steam
 		// too late (although the env var still still be already set if their is a running Steam client
@@ -230,6 +229,9 @@ mm_GetGameName(char *buffer, size_t size)
 		{
 			switch (strtoul(pszAppId, nullptr, 10))
 			{
+				case 240ul:
+					strncpy(buffer, "cstrike", size);
+					break;
 				case 570ul:
 					strncpy(buffer, "dota", size);
 					break;
@@ -252,8 +254,6 @@ mm_GetGameName(char *buffer, size_t size)
 MetamodBackend
 mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface serverFactory, const char *game_name)
 {
-	printf("[mm_DetermineBackendS1] game_name: %s\n", game_name);
-
 	if (engineFactory("VEngineServer023", NULL) != NULL)
 	{
 		if (engineFactory("EngineTraceServer004", NULL) == NULL)
@@ -395,7 +395,6 @@ mm_DetermineBackendS1(QueryValveInterface engineFactory, QueryValveInterface ser
 					}
 					else if (serverFactory("ServerGameClients005", NULL) != nullptr)
 					{
-						printf("[mm_DetermineBackendS1] return MMBackend_HL2DM\n");
 						// 2025 version of SDK 2013, or maybe hl1mp, or anything else shaped like those.
 						// We may later make a separate SDK for this branch. For now, they match, we'll hack it
 						return MMBackend_HL2DM;

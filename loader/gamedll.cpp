@@ -466,7 +466,6 @@ public:
 						 QueryValveInterface fileSystemFactory, 
 						 void *pGlobals)
 	{
-		printf("[IServerGameDLL] DLLInit game_name: %s\n", game_name);
 		mm_backend = mm_DetermineBackendS1(engineFactory, gamedll_qvi, game_name);
 
 		char error[255];
