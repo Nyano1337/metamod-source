@@ -717,11 +717,15 @@ bool mm_GetCommandArgument(const char* argName, char* buffer, size_t maxlength)
 		free(arg);
 		fclose(pFile);
 
+		printf("[mm_GetCommandArgument] buffer: %s", buffer);
+
 		return found || nextIsValue;
 	}
 #else
 #error 
 #endif
+
+	printf("[mm_GetCommandArgument] return false");
 
 	return false;
 }
